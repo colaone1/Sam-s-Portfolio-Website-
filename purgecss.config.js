@@ -6,36 +6,32 @@ async function purge() {
     
     const result = await purgeCSS.purge({
         content: [
-            '*.html',
-            'cv/*.html'
+            '**/*.html',
+            '**/*.js'
         ],
         css: ['styles.css'],
         safelist: [
-            'active',
-            'show',
-            'hide',
-            'fade-in',
-            'fade-out',
-            'slide-in',
-            'slide-out',
-            'rotate',
-            'scale',
-            'bounce',
-            'pulse',
-            'shake',
-            'flip',
-            'hover',
-            'focus',
-            'disabled',
-            'selected',
-            'checked',
-            'invalid',
-            'valid',
-            'loading',
-            'success',
-            'error',
-            'warning',
-            'info'
+            'ring-2',
+            'ring-blue-500',
+            'opacity-0',
+            'opacity-100',
+            'pointer-events-none',
+            'pointer-events-auto',
+            'focus:ring-2',
+            'focus:ring-blue-500',
+            'sr-only',
+            'not-sr-only',
+            'hidden',
+            'block',
+            'menu-open',
+            'dark',
+            'animation-delay-500',
+            'animation-delay-1000',
+            'animation-delay-1500',
+            'animation-delay-2000',
+            'animate-fadeInUp',
+            'focus:outline-none',
+            'focus:ring-[#3a7bd5]'
         ]
     });
 
