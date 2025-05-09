@@ -1179,15 +1179,16 @@ body.menu-open {
     }
 }
 
-/* Only animate SVG patterns on desktop */
-@media (min-width: 768px) {
-  .geometric-pattern.left {
-    will-change: transform;
-    animation: float 22s ease-in-out infinite;
-  }
-  .geometric-pattern.right {
-    will-change: transform;
-    animation: floatRight 18s ease-in-out infinite;
-  }
+/* Remove geometric pattern animation styles outside desktop media query */
+.geometric-pattern.left,
+.geometric-pattern.right,
+.geometric-pattern.top,
+.geometric-pattern.bottom,
+.geometric-pattern.top-left,
+.geometric-pattern.bottom-right,
+.geometric-pattern.center-left,
+.geometric-pattern.center-right {
+  animation: none !important;
+  will-change: auto;
 }
 
