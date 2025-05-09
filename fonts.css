@@ -45,4 +45,37 @@
     font-weight: 700;
     font-display: swap;
     src: url('fonts/cinzel-700.woff2') format('woff2');
+}
+
+/* Non-Critical Fonts - Load these asynchronously */
+@font-face {
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('fonts/lexend-600.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/lexend-700.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Cinzel';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('fonts/cinzel-600.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Cinzel';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/cinzel-700.woff2') format('woff2');
 } 

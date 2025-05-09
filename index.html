@@ -16,7 +16,10 @@
     <link rel="preload" href="scripts.js" as="script">
     <link rel="preload" href="images/Background/background.jpg" as="image" fetchpriority="high">
     <link rel="preload" href="images/Logos/logo.svg" as="image" fetchpriority="high">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@500;600;700&family=Lexend:wght@500;600;700&display=swap" as="style">
+    
+    <!-- Critical Fonts -->
+    <link rel="preload" href="fonts/lexend-500.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/cinzel-400.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Sam C. - Software Developer Portfolio">
@@ -94,11 +97,30 @@
 
     <!-- Inline critical CSS for nav, hero, and above-the-fold content -->
     <style>
+    /* Critical CSS */
     :root {
       --primary-color: #3a7bd5;
       --text-color: #1a1a1a;
       --background-color: #f8f5f2;
     }
+    
+    /* Critical Fonts */
+    @font-face {
+      font-family: 'Lexend';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url('fonts/lexend-500.woff2') format('woff2');
+    }
+    
+    @font-face {
+      font-family: 'Cinzel';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('fonts/cinzel-400.woff2') format('woff2');
+    }
+    
     body {
       margin: 0;
       font-family: 'Lexend', sans-serif;
@@ -106,6 +128,7 @@
       background-color: var(--background-color);
       overflow-x: hidden;
     }
+    
     .nav-container {
       position: fixed;
       top: 0;
@@ -116,12 +139,14 @@
       background-color: rgba(248, 245, 242, 0.95);
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
+    
     .hero-section {
       position: relative;
       min-height: 100vh;
       margin-top: 1.5rem;
       padding-top: 4rem;
     }
+    
     @media (prefers-reduced-motion: reduce) {
       * {
         animation-duration: 0.01ms !important;
@@ -135,9 +160,68 @@
     <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="styles.css"></noscript>
 
-    <!-- Ensure all JS is loaded with defer (except analytics, which should be async) -->
+    <!-- Load critical JavaScript inline -->
+    <script>
+    // Critical JavaScript - Load this inline
+    const utils = {
+        throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+    };
+
+    // Critical navigation functionality
+    const navigation = {
+        initialize() {
+            const nav = document.querySelector('.nav-container');
+            let lastScroll = 0;
+
+            window.addEventListener('scroll', utils.throttle(() => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > lastScroll) {
+                    nav.style.transform = 'translateY(-100%)';
+                } else {
+                    nav.style.transform = 'translateY(0)';
+                }
+                
+                lastScroll = currentScroll;
+            }, 100));
+
+            // Handle keyboard navigation
+            const navLinks = document.querySelectorAll('.nav-button');
+            navLinks.forEach((link, index) => {
+                link.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' && index < navLinks.length - 1) {
+                        navLinks[index + 1].focus();
+                    } else if (e.key === 'ArrowLeft' && index > 0) {
+                        navLinks[index - 1].focus();
+                    } else if (e.key === 'Home') {
+                        navLinks[0].focus();
+                    } else if (e.key === 'End') {
+                        navLinks[navLinks.length - 1].focus();
+                    }
+                });
+            });
+        }
+    };
+
+    // Initialize critical functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        navigation.initialize();
+    });
+    </script>
+
+    <!-- Load non-critical JavaScript asynchronously -->
     <script src="scripts.js" defer></script>
-    <!-- Google Analytics remains async -->
   </head>
   
   <!-- The body contains all visible content of the webpage -->
@@ -520,9 +604,6 @@
             aria-label="Back to top">
         <i class="fas fa-arrow-up"></i>
     </button>
-
-    <!-- Main JS: -->
-    <script src="scripts.js" defer></script>
 
     <!-- Move all other scripts to the end of body -->
     <script type="module">
