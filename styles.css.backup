@@ -72,6 +72,10 @@ body {
     transform: none;
 }
 
+.logo-image {
+    transition: none;
+}
+
 /* Glitch animation */
 @keyframes glitch {
     0% { transform: translate(0); opacity: 0.6; }
@@ -80,6 +84,37 @@ body {
     60% { transform: translate(2px, 2px); opacity: 0.6; }
     80% { transform: translate(3px, -1px); opacity: 0.6; }
     100% { transform: translate(0); opacity: 0.6; }
+}
+
+.logo-container:hover .logo-glitch {
+    animation: glitch 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    opacity: 0.6;
+}
+
+.logo-glitch {
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1;
+}
+
+.logo-glitch .css-logo {
+    font-size: 7rem;
+}
+
+.main-logo.css-logo .logo-text,
+.main-logo.css-logo:hover .logo-text {
+    animation: none;
+    text-shadow: none;
+}
+
+.main-logo.css-logo:hover + .logo-glitch {
+    opacity: 0;
+}
+
+.main-logo.css-logo:hover + .logo-glitch .logo-text {
+    animation: none;
+    opacity: 0;
+    text-shadow: none;
 }
 
 /* ===== ANIMATIONS ===== */
@@ -154,10 +189,42 @@ body {
     width: 100%;
 }
 
+.nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: currentColor;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
 /* Reduced Motion Preferences */
 @media (prefers-reduced-motion: reduce) {
-    .logo-container {
+    .logo-container,
+    .logo-container:hover .logo-glitch {
         animation: none;
+        transition: none;
+    }
+    
+    .nav-link,
+    .nav-link::after {
         transition: none;
     }
 }
@@ -255,6 +322,15 @@ footer::before {
     right: 0;
     height: 1px;
     background: linear-gradient(90deg, transparent, #00ffff, #ff00ff, transparent);
+}
+
+.social-icons a {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+    transform: translateY(-2px);
+    color: #00ffff;
 }
 
 /* ===== HERO SECTION STYLES ===== */
@@ -495,17 +571,72 @@ footer::before {
     box-shadow: 0 0 0 2px #3a7bd5;
 }
 
+.nav-logo .css-logo {
+    font-size: 1.75rem;
+    height: 40px;
+}
+
+.nav-logo .logo-text {
+    color: #1a1a1a;
+}
+
 /* Main hero logo size and effects */
+.main-logo.css-logo {
+    font-size: 7rem;
+    position: relative;
+    z-index: 2;
+}
+
+.main-logo .logo-text {
+    color: #1a1a1a;
+    position: relative;
+    display: inline-block;
+}
 
 /* CSS Logo Styles */
+.css-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.05em;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    position: relative;
+}
 
 /* Navbar logo size */
+.nav-logo .css-logo {
+    font-size: 1.75rem;
+    height: 40px;
+}
 
 /* Main hero logo size */
+.main-logo.css-logo {
+    font-size: 7rem;
+    position: relative;
+    z-index: 2;
+}
+
+.logo-text {
+    color: #1a1a1a;
+    position: relative;
+    display: inline-block;
+    text-shadow: none;
+}
 
 /* Remove all hover effects */
+.main-logo.css-logo:hover .logo-text {
+    animation: none;
+    text-shadow: none;
+    transform: none;
+}
 
 /* Remove glitch effect */
+.logo-glitch {
+    display: none;
+}
 
 /* Remove all animations */
 @keyframes glitch { }
@@ -704,6 +835,19 @@ footer::before {
 }
 
 /* Focus Styles */
+:focus {
+    outline: 3px solid #3a7bd5;
+    outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid #3a7bd5;
+    outline-offset: 2px;
+}
 
 /* Skip Link */
 .sr-only {
@@ -781,6 +925,10 @@ footer::before {
 }
 
 /* Card Focus States */
+.card-focused {
+    box-shadow: 0 0 0 3px #3a7bd5;
+    transform: translateY(-5px);
+}
 
 /* Navigation Focus States */
 .nav-button:focus {
@@ -804,6 +952,7 @@ footer a:focus {
 @media (forced-colors: active) {
     .nav-button,
     .quest-button,
+    .card-focused,
     .projects-section article:focus-within {
         border: 2px solid CanvasText;
     }
@@ -821,17 +970,61 @@ footer a:focus {
         animation: none;
     }
     
-    
+    .card-focused,
     .projects-section article:focus-within {
         transform: none;
     }
 }
 
 /* Offline and Update Indicators */
+.offline-indicator,
+.update-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+.offline-indicator {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+}
+
+.update-indicator {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+}
+
+.update-indicator button {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.update-indicator button:hover {
+    background: #218838;
+}
 
 @keyframes slideIn {
     from { transform: translateX(100%); }
     to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .offline-indicator,
+    .update-indicator {
+        animation: none;
+    }
 }
 
 /* Dark Mode Styles */
@@ -841,6 +1034,10 @@ footer a:focus {
 
 .dark .bg-white {
     background-color: #1a1a1a;
+}
+
+.dark .text-\[\#1a1a1a\] {
+    color: #ffffff;
 }
 
 .dark .bg-gray-50 {
@@ -859,9 +1056,54 @@ footer a:focus {
     color: #b3b3b3;
 }
 
+.dark .bg-\[\#f8f5f2\] {
+    background-color: #2d2d2d;
+}
+
 /* Search Styles */
+form[role="search"] {
+    position: relative;
+}
+
+form[role="search"] input[type="search"] {
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #2d3748;
+    color: #ffffff;
+    border: 1px solid #4a5568;
+    transition: all 0.3s ease;
+}
+
+form[role="search"] input[type="search"]:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+}
+
+form[role="search"] button {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #a0aec0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+form[role="search"] button:hover {
+    color: #ffffff;
+}
 
 /* Highlight Styles */
+.highlight {
+    animation: highlight 2s ease-in-out;
+    background-color: rgba(255, 255, 0, 0.3);
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+}
 
 @keyframes highlight {
     0% {
@@ -927,6 +1169,13 @@ html, body {
 }
 
 /* Navbar owl logo gradient hover effect */
+.owl-navbar-logo .owl-svg path {
+  transition: none;
+  fill: #3a7bd5;
+}
+.owl-navbar-logo:hover .owl-svg path {
+  fill: #3a7bd5;
+}
 
 /* ===== HERO OWL ENTRANCE ANIMATION ===== */
 .logo-container img {
